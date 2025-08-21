@@ -1,0 +1,538 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en" class="scroll-smooth"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Carolina Hosiery | Interactive Shoot Plan&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: American Heritage --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Application Structure Plan: The application is structured as an interactive "Project Hub" with a fixed top navigation for easy access to key sections: Overview, Visuals, Talent, Shoot Plan, Meeting Notes, and Assets. This thematic structure was chosen over a linear document format to allow stakeholders (client, production team) to quickly jump to the information most relevant to them. The "Visual Direction" section includes details on aesthetics and an interactive shot idea generator. The "Shoot Plan" uses a tabbed interface for the 3-day schedule, and "Meeting Notes" consolidates key decisions. This design prioritizes usability, clarity, and efficient information retrieval for a project management context. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization &amp; Content Choices: Report Info: The source is a qualitative creative brief and project plan. Goal: Organize and present project details for easy consumption. Viz/Presentation Method: Instead of data charts, the app uses structured HTML with interactive components and clearly formatted text blocks. Core brand concepts, visual styles, talent requirements, and deliverables are presented in descriptive text. The shoot plan includes a tabbed interface. Two new LLM-powered features are added: a Shot Idea Generator and a Voiceover Tone Refiner. Interaction: Users can click navigation links to scroll to sections, click tabs to switch schedules, and now interact with text inputs and buttons to trigger LLM calls. Justification: This approach turns a static document into a dynamic, easy-to-navigate tool, which is more effective for managing the complexities of a multi-day photo shoot, enhancing user understanding and synthesis of information. Library/Method: Vanilla JavaScript is used for all interactions (navigation scrolling, tab switching, API calls), ensuring a lightweight and fast experience. Gemini API (gemini-2.5-flash-preview-05-20) is used for text generation. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #1e3a8a;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #1e3a8a;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #eff6ff;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.loading-spinner {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 4px solid #f3f3f3;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-top: 4px solid #3b82f6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: spin 1s linear infinite;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>vertical-align: middle;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-left: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes spin {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: rotate(0deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: rotate(360deg); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-gray-50 text-gray-800"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;nav class="container mx-auto px-4 sm:px-6 lg:px-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center justify-between h-16"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex-shrink-0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h1 class="text-xl font-bold text-gray-900"&gt;Carolina Hosiery Shoot Plan&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="hidden md:block"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="ml-10 flex items-baseline space-x-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#overview" class="text-gray-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium"&gt;Overview&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#visuals" class="text-gray-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium"&gt;Visual Direction&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#talent" class="text-gray-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium"&gt;Talent&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#plan" class="text-gray-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium"&gt;Shoot Plan&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#notes" class="text-gray-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium"&gt;Meeting Notes&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="#assets" class="text-gray-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium"&gt;Assets &amp; Deliverables&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="md:hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="sr-only"&gt;Open main menu&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="mobile-menu" class="md:hidden hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#overview" class="text-gray-600 hover:text-blue-800 block px-3 py-2 rounded-md text-base font-medium"&gt;Overview&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#visuals" class="text-gray-600 hover:text-blue-800 block px-3 py-2 rounded-md text-base font-medium"&gt;Visual Direction&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#talent" class="text-gray-600 hover:text-blue-800 block px-3 py-2 rounded-md text-base font-medium"&gt;Talent&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#plan" class="text-gray-600 hover:text-blue-800 block px-3 py-2 rounded-md text-base font-medium"&gt;Shoot Plan&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#notes" class="text-gray-600 hover:text-blue-800 block px-3 py-2 rounded-md text-base font-medium"&gt;Meeting Notes&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="#assets" class="text-gray-600 hover:text-blue-800 block px-3 py-2 rounded-md text-base font-medium"&gt;Assets &amp; Deliverables&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="overview" class="mb-16 scroll-mt-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-3xl font-bold text-gray-900 mb-2"&gt;Project Overview&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600 mb-8"&gt;This section outlines the strategic foundation of the content creation project, defining the core message, target audience, and key brand values that will guide the photo and video shoot.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-lg shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-xl mb-3 text-blue-900"&gt;Core Message &amp; Narrative&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700 mb-4"&gt;Emphasize **American-made quality**, the **heritage of a family business**, and the comfort and durability that supports an authentic, hardworking, and family-oriented lifestyle.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700"&gt;The brand story video will highlight the journey from manufacturing to real-life use, connecting the product to the American spirit.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700 mt-4"&gt;&lt;strong class="font-medium text-gray-900"&gt;Keywords:&lt;/strong&gt; Authentic, American-Made, Heritage, Durable, Comfortable, Outdoors, Workwear, Family, Trustworthy.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-lg shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-xl mb-3 text-blue-900"&gt;Target Audience&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700 mb-4"&gt;Primarily **Males 26-65** who value American-made products and lead a lifestyle associated with work wear, blue-collar professions, and outdoor activities ("people willing to get dirty").&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700"&gt;Their values include quality, durability, tradition, comfort, practicality, and supporting local/American businesses. The socks solve problems like uncomfortable shoes, cold feet, lack of style options, and the need for durable work socks.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-lg shadow-md md:col-span-2 lg:col-span-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-xl mb-3 text-blue-900"&gt;Key Selling Points&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Strong American-made identity &amp; manufacturing heritage&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;The story of a family business&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Durability and comfort for work &amp; home&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Product benefits: Material (e.g., organic cotton, merino wool, recycled fibers), Technology (e.g., moisture-wicking, arch support, seamless toe)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Legacy partnerships (Wrangler, Ducks Unlimited)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Proper logo &amp; color representation is critical&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;Sustainability &amp; community focus (if applicable to highlight)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="visuals" class="mb-16 scroll-mt-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-3xl font-bold text-gray-900 mb-2"&gt;Visual Direction &amp; Shot List&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600 mb-8"&gt;This section details the primary visual themes for the shoot, outlining aesthetic choices and the types of shots to capture. Each theme will include a mix of full lifestyle shots and detailed product close-ups.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-lg shadow-md mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Aesthetics &amp; Style&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-900"&gt;Color Palette:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Earthy tones, blues, and functional neutrals (workwear/outdoor), complemented by warmer tones (cozy family).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-900"&gt;Lighting:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Mix of soft natural light (outdoor/home) and controlled lighting (manufacturing) to highlight detail.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-900"&gt;Mood/Atmosphere:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Rugged authenticity (work/outdoor) combined with warm, inviting coziness (family). Overall: trustworthy &amp; down-to-earth.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-900"&gt;Composition:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Mix of wide shots (context), medium shots (action), and close-ups (product details, texture, logos, worn on feet).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-gray-700 mt-6"&gt;&lt;strong class="font-medium text-gray-900"&gt;Inspiration:&lt;/strong&gt; Classic American workwear photography, authentic outdoor adventure shots, warm, relatable family portraits.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 class="font-bold text-2xl text-gray-900 mb-4"&gt;✨ Shot Idea Generator&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-md text-gray-600 mb-6"&gt;Enter a brief scene idea (e.g., "worker on a construction site", "family by the fireplace") to get detailed shot suggestions, including full and close-up ideas.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-lg shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col sm:flex-row gap-4 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="shotIdeaInput" placeholder="e.g., hunting with a bird dog in a field" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button id="generateShotIdea" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex-shrink-0"&gt;Generate Shot Ideas&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="shotIdeaOutput" class="min-h-[100px] bg-gray-50 p-4 rounded-lg border border-gray-200 text-gray-700 overflow-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-500"&gt;Your generated shot ideas will appear here.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="shotIdeaLoading" class="hidden text-center mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="loading-spinner"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-blue-600 ml-2"&gt;Generating ideas...&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="talent" class="mb-16 scroll-mt-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-3xl font-bold text-gray-900 mb-2"&gt;Talent &amp; Casting&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600 mb-8"&gt;This section outlines the demographics and desired characteristics for the models, ensuring they authentically represent the Carolina Hosiery brand and resonate with the target audience. It also details the options for model sourcing and associated costs.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-lg shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid sm:grid-cols-2 gap-6 text-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-900"&gt;Demographics:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-disc list-inside space-y-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Primarily **Males 25-45** for workwear/outdoor themes.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;**Women 25-35** in farm setting, horses, or barns.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;Families (including women and children) for home/cozy scenes.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-4"&gt;&lt;strong class="font-medium text-gray-900"&gt;Number of models:&lt;/strong&gt; A mix of individuals, small groups (work/hunting buddies), and families.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-900"&gt;Personality/Vibe:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Authentic, hardworking, relatable, genuine, active, comfortable.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-4"&gt;&lt;strong class="font-medium text-gray-900"&gt;Model Options &amp; Pricing:&lt;/strong&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-disc list-inside space-y-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;**Professional Models:** Approximately **$1000/day per model**. They generally provide better final results due to experience, comfort in front of the camera, and quicker workflow.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;**Friends/Family/Amateur Models:** Can range from **free to $600/day** based on experience. While some may do a great job, their performance can be hit-or-miss if they lack experience. The client would be responsible for providing friends/family models.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;**Amateur Models (Sourced by Production Team):** We can provide local amateur models in our location at **$400-600/day**.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="plan" class="mb-16 scroll-mt-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-3xl font-bold text-gray-900 mb-2"&gt;3-Day Shoot Plan &amp; Logistics&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600 mb-8"&gt;Here is the detailed schedule for the 3-day production, including locations and required props for each session. Use the tabs to switch between days for detailed information.&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white rounded-lg shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="border-b border-gray-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;nav class="-mb-px flex space-x-1 sm:space-x-4 justify-center" aria-label="Tabs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="tab-button tab-active whitespace-nowrap py-4 px-2 sm:px-4 border-b-2 font-medium text-sm" data-tab="day1"&gt;Day 1: Manufacturing&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="tab-button text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-2 sm:px-4 border-b-2 font-medium text-sm" data-tab="day2"&gt;Day 2: Outdoor &amp; Work&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="tab-button text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-2 sm:px-4 border-b-2 font-medium text-sm" data-tab="day3"&gt;Day 3: Equestrian &amp; Family&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="day1" class="tab-content p-6 md:p-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid md:grid-cols-5 gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="md:col-span-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Schedule &amp; Location&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="font-semibold text-gray-800"&gt;Location: Manufacturing Facility, Burlington, NC&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="mt-4 space-y-3 text-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;9am - 12pm:&lt;/strong&gt; Capture shots of machinery, production lines, skilled workers in action, close-ups of materials and processes. Focus on American-made quality and attention to detail for the brand story video.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;12pm - 1pm:&lt;/strong&gt; Lunch Break.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;1pm - 5pm:&lt;/strong&gt; Continue manufacturing footage and photography, focusing on specific stages of sock creation. Interview snippets with key personnel (if desired and feasible). Product detail shots within the factory environment. Video portraits of workers in their work environment to give face to the workers behind the product.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="md:col-span-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Required Props &amp; Assets&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;All 10 sock product samples for detail shots&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Existing machinery and tools as primary props&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Raw materials (yarn, fabric) for process shots&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Safety gear (hard hats, glasses) for authenticity&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Product packaging (if available)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 mt-6 text-blue-900"&gt;Potential Locations&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Interior: Production lines, machinery, raw material storage, quality control areas, worker stations.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="day2" class="tab-content hidden p-6 md:p-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid md:grid-cols-5 gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="md:col-span-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Schedule &amp; Location&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="font-semibold text-gray-800"&gt;Location: Various Sites, Boone, NC Area&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="mt-4 space-y-3 text-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;9am - 12:30pm:&lt;/strong&gt; Outdoor Activities Focus (Hunting/Fishing/Hiking). Capture models (primarily male) with outdoor gear and bird dogs in natural settings (e.g., fields, wooded areas, by a stream). Focus on durability and performance of socks. Shots on trails, by a tent, highlighting comfort and resilience.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;12:30pm - 1:30pm:&lt;/strong&gt; Lunch Break.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;1:30pm - 5pm:&lt;/strong&gt; Workwear Scenes Focus (Construction/Farm/Workshop). Models (male) in authentic work environments (e.g., building site, farmyard). Capture socks in boots and in action. Showcase socks in a more industrial or hands-on setting.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="md:col-span-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Required Props &amp; Assets&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Outdoor Gear: Prop shotgun, game vest, fishing rods, backpacks, water bottles, camping chairs, small tent, campfire props (safely contained)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Trained bird dogs (if available)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Work Tools: Hard hats, tool belts, hammers, drills, wrenches, lumber, blueprints, farm tools (pitchfork, shovel), hay bales, buckets, work gloves, engine parts, shop rags&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Wardrobe: Authentic workwear, outdoor apparel, work boots, hiking boots, fishing waders&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 mt-6 text-blue-900"&gt;Potential Locations&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Outdoor Activity Areas: Fields, wooded areas, hiking trails, streams/rivers (for fishing), campsites.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Work Settings: Construction site (active or simulated), Farm/farmyard (barns, open fields, possibly specific farm equipment), Mechanic's garage/workshop, General industrial environment (if a suitable one is available).&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="day3" class="tab-content hidden p-6 md:p-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid md:grid-cols-5 gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="md:col-span-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Schedule &amp; Location&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="font-semibold text-gray-800"&gt;Location: Various Sites, Boone, NC Area&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="mt-4 space-y-3 text-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;9am - 12:30pm:&lt;/strong&gt; Equestrian &amp; Barn Scenes. Models (male/female, 25-35 female as per demographics) interacting with horses, working in a barn. Crucial close-ups of socks peeking from cowboy boots, feet in stirrups, or general barn work.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;12:30pm - 1:30pm:&lt;/strong&gt; Lunch Break.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong class="font-medium text-gray-900"&gt;1:30pm - 5pm:&lt;/strong&gt; Cozy Family &amp; Home Scenes. Models (family unit: male, female, children) in a warm, inviting home setting. Shots by a fireplace, on a couch, casual moments highlighting comfort and warmth of the socks. Close-ups on feet in cozy socks.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="md:col-span-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Required Props &amp; Assets&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Trained, model-friendly horses&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Equestrian Gear: Saddles, bridles, blankets, grooming brushes, hay bales, barn tools (hay forks, buckets, feed bags)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Home Props: Cozy blankets, pillows, books, magazines, mugs for hot drinks, board game or family activity props, fireplace accessories (firewood, poker, hearth tools)&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Wardrobe: Casual home attire, flannel, jeans, cowboy boots, slippers&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-xl mb-4 mt-6 text-blue-900"&gt;Potential Locations&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Equestrian Setting: Barn, horse stables, riding arena, pastures.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;Cozy Home Setting: Interior of a comfortable home (living room, common areas with a fireplace, a couch).&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="notes" class="mb-16 scroll-mt-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-3xl font-bold text-gray-900 mb-2"&gt;Meeting Notes &amp; Action Items&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600 mb-8"&gt;This section summarizes key discussions from the initial planning meeting and outlines the agreed-upon next steps for both the client and the production team.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-lg shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3 class="font-bold text-xl mb-4 text-blue-900"&gt;Key Project Details&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Project Goal: Create brand story video and lifestyle photography for Carolina Hosiery, emphasizing American-made, family business, and supporting a workwear/outdoor/blue-collar lifestyle, also including cozy family scenes.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Key Partnerships: Highlight associations with Wrangler, Ducks Unlimited, and other legacy brands.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Production Logistics: Locations primarily in the production team's area, with one day at the Burlington manufacturing facility. Client welcome to join shoot days if desired. Concern about proper product representation (logos, colors appearing differently when stretched) – this needs careful attention.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3 class="font-bold text-xl mb-4 mt-6 text-blue-900"&gt;Action Items&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul class="space-y-2 text-gray-700 list-disc list-inside"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;[ ] Client to send brand guidelines, company history, and specific product information.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;[ ] Client to send product samples to production team.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;[ ] Production team to create lookbook and visual direction.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;[ ] Production team to provide pricing options (with pro vs. non-pro models).&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;[ ] Production team to propose schedule for mid-September shoot.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;[ ] Client to decide whether they want to join for shooting days.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;[ ] Production team to prepare contract and invoice.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="assets" class="scroll-mt-20"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-3xl font-bold text-gray-900 mb-2"&gt;Assets &amp; Deliverables&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600 mb-8"&gt;This final section specifies the content to be delivered upon project completion, along with usage rights and the target delivery timeline.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-lg shadow-md grid md:grid-cols-2 lg:grid-cols-3 gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-xl mb-3 text-blue-900"&gt;Photography&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-5xl font-bold text-gray-800"&gt;75&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-600"&gt;Client-selected, high-resolution lifestyle photos. A larger proof set will be provided for selection. Additional final photos can be licensed at $50 per photo.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-xl mb-3 text-blue-900"&gt;Videography&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-5xl font-bold text-gray-800"&gt;1+&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-600"&gt;Main brand story video (60-90s montage-style with potential rustic/southern voiceover) plus multiple shorter social media edits (15-30s). Content will focus on the journey of the product, from American manufacturing to its role in the lives of hardworking individuals and families. Music/sound design should evoke heritage and Americana.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-600 mt-2"&gt;&lt;strong class="font-medium text-gray-900"&gt;Call to Action:&lt;/strong&gt; Direct viewers to website/social media to explore products.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mt-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4 class="font-bold text-lg mb-2 text-blue-900"&gt;✨ Voiceover Tone Refiner&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-sm text-gray-600 mb-4"&gt;Input a short phrase or sentence, and I'll rephrase it with a rustic/southern tone for your brand video.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;textarea id="voiceoverInput" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Our socks are built for hardworking Americans."&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button id="refineVoiceover" class="mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"&gt;Refine Voiceover&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="voiceoverOutput" class="min-h-[60px] bg-gray-50 p-4 mt-4 rounded-lg border border-gray-200 text-gray-700 overflow-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-500"&gt;Refined voiceover will appear here.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="voiceoverLoading" class="hidden text-center mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="loading-spinner"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="text-green-600 ml-2"&gt;Refining tone...&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-xl mb-3 text-blue-900"&gt;Timeline &amp; Usage&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700"&gt;&lt;strong class="font-medium text-gray-900"&gt;Production:&lt;/strong&gt; Mid-September&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-700"&gt;&lt;strong class="font-medium text-gray-900"&gt;Delivery:&lt;/strong&gt; Early October&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-600 mt-2"&gt;Nation-wide license for website, social media, newsletters, and physical marketing materials.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', function () {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const tabs = document.querySelectorAll('.tab-button');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const tabContents = document.querySelectorAll('.tab-content');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mobileMenuButton = document.getElementById('mobile-menu-button');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mobileMenu = document.getElementById('mobile-menu');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const navLinks = document.querySelectorAll('nav a');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Tab functionality for Shoot Plan</p>
+<p class="p1"><span class="Apple-converted-space">            </span>tabs.forEach(tab =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tab.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tabs.forEach(t =&gt; t.classList.remove('tab-active'));</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tab.classList.add('tab-active');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tabContents.forEach(content =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (content.id === tab.dataset.tab) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>content.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>content.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Mobile menu toggle</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mobileMenuButton.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>mobileMenu.classList.toggle('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Close mobile menu on navigation link click</p>
+<p class="p1"><span class="Apple-converted-space">            </span>navLinks.forEach(link =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>link.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (!mobileMenu.classList.contains('hidden')) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>mobileMenu.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Gemini API Integration - Shot Idea Generator</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const generateShotIdeaBtn = document.getElementById('generateShotIdea');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const shotIdeaInput = document.getElementById('shotIdeaInput');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const shotIdeaOutput = document.getElementById('shotIdeaOutput');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const shotIdeaLoading = document.getElementById('shotIdeaLoading');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>generateShotIdeaBtn.addEventListener('click', async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const prompt = shotIdeaInput.value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!prompt) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>shotIdeaOutput.innerHTML = '&lt;p class="text-red-500"&gt;Please enter a scene idea.&lt;/p&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>shotIdeaOutput.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>shotIdeaLoading.classList.remove('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const chatHistory = [];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>chatHistory.push({ role: "user", parts: [{ text: `Generate detailed shot ideas (including full shots and close-ups) for a photo and video shoot focusing on a sock brand. The brand emphasizes American-made quality, heritage, and supports hardworking, outdoor, and family-oriented lifestyles. The scene idea is: "${prompt}". Provide ideas for 3-5 distinct shots.` }] });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const payload = { contents: chatHistory };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const apiKey = "";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let retries = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const maxRetries = 3;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let delay = 1000; // 1 second</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>while (retries &lt; maxRetries) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const response = await fetch(apiUrl, {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>body: JSON.stringify(payload)</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (response.status === 429) { // Too Many Requests</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>retries++;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>await new Promise(res =&gt; setTimeout(res, delay));</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>delay *= 2; // Exponential backoff</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>continue;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>throw new Error(`HTTP error! status: ${response.status}`);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const result = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (result.candidates &amp;&amp; result.candidates.length &gt; 0 &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>result.candidates[0].content &amp;&amp; result.candidates[0].content.parts &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>result.candidates[0].content.parts.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>const text = result.candidates[0].content.parts[0].text;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>shotIdeaOutput.innerHTML = `&lt;pre class="whitespace-pre-wrap font-sans text-gray-800"&gt;${text}&lt;/pre&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>shotIdeaOutput.innerHTML = '&lt;p class="text-red-500"&gt;Could not generate shot ideas. Please try again.&lt;/p&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>break; // Exit loop on success</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>console.error('Error generating shot idea:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>retries++;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (retries &lt; maxRetries) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>await new Promise(res =&gt; setTimeout(res, delay));</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>delay *= 2;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>shotIdeaOutput.innerHTML = `&lt;p class="text-red-500"&gt;Error generating shot ideas after multiple retries. ${error.message}&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>shotIdeaLoading.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Gemini API Integration - Voiceover Tone Refiner</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const refineVoiceoverBtn = document.getElementById('refineVoiceover');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const voiceoverInput = document.getElementById('voiceoverInput');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const voiceoverOutput = document.getElementById('voiceoverOutput');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const voiceoverLoading = document.getElementById('voiceoverLoading');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>refineVoiceoverBtn.addEventListener('click', async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const textToRefine = voiceoverInput.value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!textToRefine) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>voiceoverOutput.innerHTML = '&lt;p class="text-red-500"&gt;Please enter text to refine.&lt;/p&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>voiceoverOutput.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>voiceoverLoading.classList.remove('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const chatHistory = [];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>chatHistory.push({ role: "user", parts: [{ text: `Rephrase the following text to have a rustic or southern tone, suitable for a brand voiceover for an American-made, heritage-focused sock brand. Keep it concise. Text: "${textToRefine}"` }] });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const payload = { contents: chatHistory };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const apiKey = "";</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let retries = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const maxRetries = 3;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let delay = 1000; // 1 second</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>while (retries &lt; maxRetries) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const response = await fetch(apiUrl, {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>body: JSON.stringify(payload)</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (response.status === 429) { // Too Many Requests</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>retries++;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>await new Promise(res =&gt; setTimeout(res, delay));</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>delay *= 2; // Exponential backoff</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>continue;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>throw new Error(`HTTP error! status: ${response.status}`);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const result = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (result.candidates &amp;&amp; result.candidates.length &gt; 0 &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>result.candidates[0].content &amp;&amp; result.candidates[0].content.parts &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>result.candidates[0].content.parts.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>const text = result.candidates[0].content.parts[0].text;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>voiceoverOutput.innerHTML = `&lt;pre class="whitespace-pre-wrap font-sans text-gray-800"&gt;${text}&lt;/pre&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>voiceoverOutput.innerHTML = '&lt;p class="text-red-500"&gt;Could not refine voiceover. Please try again.&lt;/p&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>break; // Exit loop on success</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>console.error('Error refining voiceover:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>retries++;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (retries &lt; maxRetries) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>await new Promise(res =&gt; setTimeout(res, delay));</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>delay *= 2;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>voiceoverOutput.innerHTML = `&lt;p class="text-red-500"&gt;Error refining voiceover after multiple retries. ${error.message}&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>voiceoverLoading.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
